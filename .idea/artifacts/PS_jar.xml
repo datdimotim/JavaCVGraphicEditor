@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact name="PS:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/PS_jar</output-path>
+    <root id="root">
+      <element id="archive" name="PS.jar">
+        <element id="module-output" name="PS" />
+        <element id="file-copy" path="$PROJECT_DIR$/opencv lib/build/java/opencv-2413.jar" />
+      </element>
+    </root>
+  </artifact>
+</component>
