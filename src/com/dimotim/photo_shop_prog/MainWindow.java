@@ -4,8 +4,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -30,7 +28,7 @@ public class MainWindow extends JFrame{
         setListeners();
         setContentPane(rootPanel);
         pack();
-        setResizable(false);
+        //setResizable(false);
         setVisible(true);
     }
     private void setListeners(){
@@ -52,7 +50,7 @@ public class MainWindow extends JFrame{
             });
             fc.showOpenDialog(this);
             if(fc.getSelectedFile()==null)return;
-            onFileToLoadSelected(fc.getSelectedFile());
+            loadFromFile(fc.getSelectedFile());
         });
 
         saveButton.addActionListener(e -> {
@@ -77,7 +75,7 @@ public class MainWindow extends JFrame{
             if(fc.getSelectedFile()==null)return;
             String path=fc.getSelectedFile().getAbsolutePath();
             if(!path.toLowerCase().endsWith(".png"))path+=".png";
-            onFileToSaveSelected(new File(path));
+            saveToFile(new File(path));
         });
 
         scaleButton.addActionListener(e -> {
@@ -129,11 +127,12 @@ public class MainWindow extends JFrame{
         });
 
         revertButton.addActionListener(e -> {
+            if(initImage==null)return;
             showPanel.setImage(initImage);
         });
     }
-    private void onFileToSaveSelected(File file) {
-        if(showPanel.getImage()==null)return;
+    private void saveToFile(File file) {
+        if(showPanel.getImage()==null)throw new RuntimeException("image doesn't exist");
         if(file.exists()) {
             JOptionPane.showMessageDialog(this, "File is already exists!");
             return;
@@ -146,7 +145,7 @@ public class MainWindow extends JFrame{
             JOptionPane.showMessageDialog(this, "Saving error!");
         }
     }
-    private void onFileToLoadSelected(File file){
+    private void loadFromFile(File file){
         System.out.println(file.getAbsolutePath());
         ImageIcon image= new ImageIcon(file.getAbsolutePath());
         if(image.getImageLoadStatus()!=MediaTracker.COMPLETE){
@@ -156,6 +155,5 @@ public class MainWindow extends JFrame{
         showPanel.setImage(CVEffects.id(image.getImage()));
         initImage=showPanel.getImage();
     }
-
 }
 
