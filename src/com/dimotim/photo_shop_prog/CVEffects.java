@@ -26,10 +26,10 @@ public class CVEffects {
         return matToImage(out);
     }
 
-    private BufferedImage canny(BufferedImage image){
+    public static BufferedImage canny(BufferedImage image, int treshold1, int treshold2, int apertureSize, boolean l2Gradient){
         Mat rgbImage=imageToMat(image);
         Mat edges=new Mat(image.getWidth(null),image.getHeight(null),CvType.CV_8UC3);
-        Imgproc.Canny(rgbImage,edges,100,200);
+        Imgproc.Canny(rgbImage,edges,treshold1,treshold2,apertureSize,l2Gradient);
         return matToImage(edges);
     }
 

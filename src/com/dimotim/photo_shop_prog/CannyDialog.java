@@ -4,38 +4,42 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 
-public class PaleteDialog extends JDialog {
+public class CannyDialog extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
-    private JComboBox sizeComboBox;
-
+    private JSlider treshold1;
+    private JSlider treshold2;
+    private JCheckBox l2GradientCheckBox;
+    private JComboBox apertureSizeCombobox;
     private ShowPanel showPanel;
     private BufferedImage initImage;
 
-    public PaleteDialog(ShowPanel showPanel){
+    public CannyDialog(ShowPanel showPanel){
         this();
         this.showPanel=showPanel;
         this.initImage=showPanel.getImage();
-        sizeComboBox.addItemListener(e -> {
-            System.out.println("palete changed: "+e.getItem());
-            if(e.getStateChange()==ItemEvent.SELECTED) {
-                showPanel.setImage(
-                        CVEffects.palette(
-                                initImage,
-                                Integer.parseInt(
-                                        e.getItem().toString()
-                                )
-                        )
-                );
-            }
-        });
-        showPanel.setImage(CVEffects.palette(initImage, 8));
+        apertureSizeCombobox.addItemListener(e->onChanged());
+        treshold1.addChangeListener(e->onChanged());
+        treshold2.addChangeListener(e->onChanged());
+        apertureSizeCombobox.addItemListener(e->onChanged());
+        l2GradientCheckBox.addActionListener(e->onChanged());
+        onChanged();
         pack();
         setVisible(true);
     }
 
-    public PaleteDialog() {
+    private void onChanged(){
+        showPanel.setImage(
+                CVEffects.canny(
+                        initImage,
+                        treshold1.getValue(),
+                        treshold2.getValue(),
+                        Integer.parseInt(apertureSizeCombobox.getSelectedItem().toString()),
+                        l2GradientCheckBox.isSelected()));
+    }
+
+    public CannyDialog() {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -69,6 +73,7 @@ public class PaleteDialog extends JDialog {
     }
 
     private void onOK() {
+        // add your code here
         dispose();
     }
 
@@ -78,7 +83,9 @@ public class PaleteDialog extends JDialog {
     }
 
     public static void main(String[] args) {
-        PaleteDialog dialog = new PaleteDialog(new ShowPanel());
+        CannyDialog dialog = new CannyDialog();
+        dialog.pack();
+        dialog.setVisible(true);
         System.exit(0);
     }
 }
