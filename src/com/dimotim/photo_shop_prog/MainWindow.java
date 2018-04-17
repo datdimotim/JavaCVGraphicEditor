@@ -1,5 +1,7 @@
 package com.dimotim.photo_shop_prog;
 
+import javafx.scene.control.Slider;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -22,6 +24,7 @@ public class MainWindow extends JFrame{
     private JButton autoBrightnessButton;
     private JButton palleteButton;
     private JButton edgesButton;
+    private JButton blurButton;
     private BufferedImage initImage;
 
     public MainWindow(){
@@ -131,6 +134,12 @@ public class MainWindow extends JFrame{
         autoBrightnessButton.addActionListener(e -> {
             if(showPanel.getImage()==null)return;
             showPanel.setImage(CVEffects.autoBrightness(showPanel.getImage()));
+        });
+
+        blurButton.addActionListener(e->{
+            BufferedImage image=showPanel.getImage();
+            if(image==null)return;
+            new SliderDialog(showPanel,CVEffects::blur,3,100,0);
         });
 
         revertButton.addActionListener(e -> {

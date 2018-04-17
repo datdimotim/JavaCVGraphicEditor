@@ -3,6 +3,7 @@ package com.dimotim.photo_shop_prog;
 import org.opencv.core.*;
 import org.opencv.highgui.Highgui;
 import org.opencv.imgproc.Imgproc;
+import sun.misc.Cache;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -81,11 +82,8 @@ public class CVEffects {
     }
 
     static public BufferedImage contrast(BufferedImage image,int step){
-        Mat rgbImage=imageToMat(image);
         ArrayList<Mat> channels=new ArrayList<>();
-        channels.add(new Mat(image.getWidth(null),image.getHeight(null),CV_8UC1));
-        channels.add(new Mat(image.getWidth(null),image.getHeight(null),CV_8UC1));
-        channels.add(new Mat(image.getWidth(null),image.getHeight(null),CV_8UC1));
+        Mat rgbImage=imageToMat(image);
         Core.split(rgbImage,channels);
         Mat lut=new Mat(1, 256, CV_8UC1);
         double contrastLevel = ((double)100 + (double) step) / 100;
@@ -96,10 +94,13 @@ public class CVEffects {
             lut.put(0, i, d);
         }
         for(Mat ch:channels)Core.LUT(ch,lut,ch);
-        Mat res=new Mat();
-        Core.merge(channels,res);
+        Core.merge(channels,rgbImage);
+
+        BufferedImage ret=matToImage(rgbImage);
         for(Mat m:channels)m.release();
-        return matToImage(res);
+        rgbImage.release();
+        lut.release();
+        return ret;
     }
 
     static public BufferedImage palette(BufferedImage image,int num){
@@ -124,6 +125,13 @@ public class CVEffects {
         Core.merge(channels,res);
         for(Mat m:channels)m.release();
         return matToImage(res);
+    }
+
+    public static BufferedImage blur(BufferedImage image, int step){
+        Mat img=imageToMat(image);
+        Mat blur=new Mat();
+        Imgproc.blur(img,blur,new Size(step,step));
+        return matToImage(blur);
     }
 
     static public BufferedImage gray(BufferedImage image){

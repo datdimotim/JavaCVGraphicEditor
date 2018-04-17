@@ -17,6 +17,7 @@ public class ShowPanel extends JButton {
         g.dispose();
     }
     public void setImage(BufferedImage image){
+
         this.image=image;
         setPreferredSize(new Dimension(image.getWidth(null),image.getHeight(null)));
         updateUI();
