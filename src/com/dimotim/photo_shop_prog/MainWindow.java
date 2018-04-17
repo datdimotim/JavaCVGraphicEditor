@@ -25,6 +25,7 @@ public class MainWindow extends JFrame{
     private JButton palleteButton;
     private JButton edgesButton;
     private JButton blurButton;
+    private JButton pseudoColorButton;
     private BufferedImage initImage;
 
     public MainWindow(){
@@ -105,6 +106,12 @@ public class MainWindow extends JFrame{
             BufferedImage image=showPanel.getImage();
             if(image==null)return;
             showPanel.setImage(CVEffects.gray(image));
+        });
+
+        pseudoColorButton.addActionListener(e->{
+            BufferedImage image=showPanel.getImage();
+            if(image==null)return;
+            showPanel.setImage(CVEffects.pseudoColor(image));
         });
 
         palleteButton.addActionListener(e -> {

@@ -13,8 +13,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import static org.opencv.core.CvType.CV_8UC1;
-import static org.opencv.core.CvType.CV_8UC3;
+import static org.opencv.core.CvType.*;
 import static org.opencv.imgproc.Imgproc.*;
 
 public class CVEffects {
@@ -134,9 +133,26 @@ public class CVEffects {
         return matToImage(blur);
     }
 
+    public static BufferedImage pseudoColor(BufferedImage image){
+        Mat img=imageToMat(image);
+        Mat gray=new Mat(img.rows(),img.cols(),CV_8UC1);
+        Imgproc.cvtColor(img,gray,COLOR_BGR2GRAY);
+        Mat white=Mat.zeros(img.rows(),img.cols(),CV_8U);
+        white.setTo(new Scalar(255));
+        ArrayList<Mat> ch=new ArrayList<>();
+        ch.add(gray);
+        ch.add(white);
+        ch.add(white);
+        Mat merged=new Mat();
+        Core.merge(ch,merged);
+        Mat pseudo=new Mat();
+        Imgproc.cvtColor(merged,pseudo,COLOR_HSV2BGR_FULL);
+        return matToImage(pseudo);
+    }
+
     static public BufferedImage gray(BufferedImage image){
         Mat rgbImage=imageToMat(image);
-        Mat gray=new Mat(image.getWidth(null),image.getHeight(null),CvType.CV_8U);
+        Mat gray=new Mat(image.getWidth(null),image.getHeight(null), CV_8U);
         Imgproc.cvtColor(rgbImage,gray,COLOR_BGR2GRAY);
         return matToImage(gray);
     }
