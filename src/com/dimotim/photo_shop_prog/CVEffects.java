@@ -3,7 +3,6 @@ package com.dimotim.photo_shop_prog;
 import org.opencv.core.*;
 import org.opencv.highgui.Highgui;
 import org.opencv.imgproc.Imgproc;
-import sun.misc.Cache;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -24,13 +23,6 @@ public class CVEffects {
         Imgproc.resize(in,out,new Size((int)(in.cols()*scale),(int)(in.rows()*scale)));
         in.release();
         return matToImage(out);
-    }
-
-    public static BufferedImage canny(BufferedImage image, int treshold1, int treshold2, int apertureSize, boolean l2Gradient){
-        Mat rgbImage=imageToMat(image);
-        Mat edges=new Mat(image.getWidth(null),image.getHeight(null),CvType.CV_8UC3);
-        Imgproc.Canny(rgbImage,edges,treshold1,treshold2,apertureSize,l2Gradient);
-        return matToImage(edges);
     }
 
     private static Mat getGammaExpo(int step){

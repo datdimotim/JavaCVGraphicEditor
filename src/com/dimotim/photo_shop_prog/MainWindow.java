@@ -20,7 +20,6 @@ public class MainWindow extends JFrame{
     private JButton brightnessButton;
     private JButton autoBrightnessButton;
     private JButton palleteButton;
-    private JButton edgesButton;
     private JButton blurButton;
     private JButton pseudoColorButton;
     private BufferedImage initImage;
@@ -102,12 +101,6 @@ public class MainWindow extends JFrame{
             BufferedImage image=showPanel.getImage();
             if(image==null)return;
             new PaleteDialog(showPanel);
-        });
-
-        edgesButton.addActionListener(e->{
-            BufferedImage image=showPanel.getImage();
-            if(image==null)return;
-            new CannyDialog(showPanel);
         });
 
         contrastButton.addActionListener(e -> {
