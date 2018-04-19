@@ -10,31 +10,25 @@ import java.io.IOException;
 
 public class MainWindow extends JFrame{
     private JPanel rootPanel;
-    private JButton loadButton;
-    private JButton saveButton;
-    private JButton revertButton;
     private ShowPanel showPanel;
-    private JButton grayButton;
-    private JButton contrastButton;
-    private JButton scaleButton;
-    private JButton brightnessButton;
-    private JButton autoBrightnessButton;
-    private JButton palleteButton;
-    private JButton edgesButton;
-    private JButton blurButton;
-    private JButton pseudoColorButton;
     private BufferedImage initImage;
 
     public MainWindow(){
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setListeners();
         setContentPane(rootPanel);
+        setTitle("Graphic Editor");
+        initMenu();
         pack();
         setMinimumSize(getSize());
         setVisible(true);
     }
-    private void setListeners(){
-        loadButton.addActionListener(e -> {
+
+    private void initMenu(){
+        JMenuBar menuBar=new JMenuBar();
+
+        JMenu menuFile=new JMenu("Файл");
+        JMenuItem openItem=new JMenuItem("Открыть");
+        openItem.addActionListener(e -> {
             JFileChooser fc=new JFileChooser();
             fc.setMultiSelectionEnabled(false);
             fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -54,8 +48,9 @@ public class MainWindow extends JFrame{
             if(fc.getSelectedFile()==null)return;
             loadFromFile(fc.getSelectedFile());
         });
-
-        saveButton.addActionListener(e -> {
+        menuFile.add(openItem);
+        JMenuItem saveItem=new JMenuItem("Сохранить");
+        saveItem.addActionListener(e -> {
             if(showPanel.getImage()==null)return;
             JFileChooser fc=new JFileChooser();
             fc.setDialogTitle("Save");
@@ -80,64 +75,82 @@ public class MainWindow extends JFrame{
             if(!path.toLowerCase().endsWith(".png"))path+=".png";
             saveToFile(new File(path));
         });
+        menuFile.add(saveItem);
+        menuBar.add(menuFile);
 
-        scaleButton.addActionListener(e -> {
+        JMenu effectsMenu=new JMenu("Эффекты");
+        JMenuItem revertItem=new JMenuItem("Отменить все эффекты");
+        revertItem.addActionListener(e -> {
+            if(initImage==null)return;
+            showPanel.setImage(initImage);
+        });
+        effectsMenu.add(revertItem);
+        JMenuItem scaleItem=new JMenuItem("Масштаб");
+        scaleItem.addActionListener(e -> {
             BufferedImage image=showPanel.getImage();
             if(image==null)return;
             new ScaleDialog(showPanel);
         });
-        grayButton.addActionListener(e -> {
+        effectsMenu.add(scaleItem);
+        JMenuItem blackWhiteItem=new JMenuItem("Оттенки серого");
+        blackWhiteItem.addActionListener(e -> {
             BufferedImage image=showPanel.getImage();
             if(image==null)return;
             showPanel.setImage(CVEffects.gray(image));
         });
-
-        pseudoColorButton.addActionListener(e->{
-            BufferedImage image=showPanel.getImage();
-            if(image==null)return;
-            showPanel.setImage(CVEffects.pseudoColor(image));
-        });
-
-        palleteButton.addActionListener(e -> {
+        effectsMenu.add(blackWhiteItem);
+        JMenuItem paleteItem=new JMenuItem("Палитра");
+        paleteItem.addActionListener(e -> {
             BufferedImage image=showPanel.getImage();
             if(image==null)return;
             new PaleteDialog(showPanel);
         });
-
-        edgesButton.addActionListener(e->{
+        effectsMenu.add(paleteItem);
+        JMenuItem pseudoColorItem=new JMenuItem("Псевдоцвет");
+        pseudoColorItem.addActionListener(e->{
             BufferedImage image=showPanel.getImage();
             if(image==null)return;
-            new CannyDialog(showPanel);
+            showPanel.setImage(CVEffects.pseudoColor(image));
         });
-
-        contrastButton.addActionListener(e -> {
-            Image image=showPanel.getImage();
-            if(image==null)return;
-            new SliderDialog(showPanel,CVEffects::contrast,-50,300,0);
-        });
-
-        brightnessButton.addActionListener(e -> {
+        effectsMenu.add(pseudoColorItem);
+        JMenuItem brightnessItem=new JMenuItem("Яркость");
+        brightnessItem.addActionListener(e -> {
             Image image=showPanel.getImage();
             if(image==null)return;
             new SliderDialog(showPanel,CVEffects::brightness,-200,200,0);
         });
-
-        autoBrightnessButton.addActionListener(e -> {
+        effectsMenu.add(brightnessItem);
+        JMenuItem autoBrightnessItem=new JMenuItem("Автояркость");
+        autoBrightnessItem.addActionListener(e -> {
             if(showPanel.getImage()==null)return;
             showPanel.setImage(CVEffects.autoBrightness(showPanel.getImage()));
         });
-
-        blurButton.addActionListener(e->{
+        effectsMenu.add(autoBrightnessItem);
+        JMenuItem contrastItem=new JMenuItem("Контрастность");
+        contrastItem.addActionListener(e -> {
+            Image image=showPanel.getImage();
+            if(image==null)return;
+            new SliderDialog(showPanel,CVEffects::contrast,-50,300,0);
+        });
+        effectsMenu.add(contrastItem);
+        JMenuItem blurItem=new JMenuItem("Размытость");
+        blurItem.addActionListener(e->{
             BufferedImage image=showPanel.getImage();
             if(image==null)return;
             new SliderDialog(showPanel,CVEffects::blur,3,100,0);
         });
-
-        revertButton.addActionListener(e -> {
-            if(initImage==null)return;
-            showPanel.setImage(initImage);
+        effectsMenu.add(blurItem);
+        JMenuItem cannyItem=new JMenuItem("Детектор краёв");
+        cannyItem.addActionListener(e->{
+            BufferedImage image=showPanel.getImage();
+            if(image==null)return;
+            new CannyDialog(showPanel);
         });
+        effectsMenu.add(cannyItem);
+        menuBar.add(effectsMenu);
+        setJMenuBar(menuBar);
     }
+
     private void saveToFile(File file) {
         if(showPanel.getImage()==null)throw new RuntimeException("image doesn't exist");
         if(file.exists()) {
