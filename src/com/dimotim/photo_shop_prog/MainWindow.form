@@ -46,11 +46,13 @@
       </grid>
       <scrollpane id="a0e6f">
         <constraints>
-          <grid row="1" column="0" row-span="9" col-span="1" vsize-policy="0" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false">
+          <grid row="1" column="0" row-span="9" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false">
             <preferred-size width="800" height="600"/>
           </grid>
         </constraints>
-        <properties/>
+        <properties>
+          <background color="-855310"/>
+        </properties>
         <border type="none"/>
         <children>
           <component id="63f29" class="com.dimotim.photo_shop_prog.ShowPanel" binding="showPanel">

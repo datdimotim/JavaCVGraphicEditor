@@ -97,7 +97,8 @@ public class MainWindow extends JFrame{
                 return;
             }
             if(showPanel.getImage()==null)return;
-            showPanel.setImage(CVEffects.resize(image,ratio));
+            showPanel.setScale(ratio);
+            //showPanel.setImage(CVEffects.resize(image,ratio));
         });
         grayButton.addActionListener(e -> {
             BufferedImage image=showPanel.getImage();

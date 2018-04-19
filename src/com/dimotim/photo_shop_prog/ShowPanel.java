@@ -10,20 +10,32 @@ public class ShowPanel extends JButton {
     public void paint(Graphics g) {
         g.clearRect(0,0,getWidth(),getHeight());
         if(image==null)return;
+        double scale=getWidth()/(double)image.getWidth();
+        if(scale*image.getHeight()>getHeight())scale=getHeight()/(double)image.getHeight();
+
+        final int w=(int)(scale*image.getWidth());
+        final int h= (int)(scale*image.getHeight());
         g.drawImage(image,
-                0,0,image.getWidth(null),image.getHeight(null),
-                0,0,image.getWidth(null),image.getHeight(null),
+                (getWidth()-w)/2,(getHeight()-h)/2,(getWidth()-w)/2+w,(getHeight()-h)/2+h,
+                0,0,image.getWidth(),image.getHeight(),
                 null);
         g.dispose();
     }
-    public void setImage(BufferedImage image){
 
+    public void setImage(BufferedImage image){
         this.image=image;
-        setPreferredSize(new Dimension(image.getWidth(null),image.getHeight(null)));
         updateUI();
     }
 
     public BufferedImage getImage() {
         return image;
+    }
+
+    public void setScale(double scale){
+        Dimension s=getParent().getSize();
+        s.height*=scale;
+        s.width*=scale;
+        setPreferredSize(s);
+        updateUI();
     }
 }
