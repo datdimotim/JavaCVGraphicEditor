@@ -62,22 +62,21 @@ public class CVEffects {
         return matToImage(res);
     }
 
-    static public BufferedImage autoBrightness(BufferedImage image){
+    static public BufferedImage negative(BufferedImage image){
         Mat rgbImage=imageToMat(image);
-        Mat hsvImage=new Mat();
-        cvtColor(rgbImage,hsvImage,COLOR_RGB2HSV_FULL);
         ArrayList<Mat> channels=new ArrayList<>();
         channels.add(new Mat(image.getWidth(null),image.getHeight(null),CV_8UC1));
         channels.add(new Mat(image.getWidth(null),image.getHeight(null),CV_8UC1));
         channels.add(new Mat(image.getWidth(null),image.getHeight(null),CV_8UC1));
-        Core.split(hsvImage,channels);
-        Imgproc.equalizeHist(channels.get(2),channels.get(2));
-
-        Mat res=new Mat(image.getHeight(null),image.getWidth(null),CV_8UC3);
+        Core.split(rgbImage,channels);
+        Mat lut=new Mat(1, 256, CV_8UC1);
+        for(int i=0;i<256;i++) {
+            lut.put(0, i, 255-i);
+        }
+        for(Mat ch:channels)Core.LUT(ch,lut,ch);
         Core.merge(channels,rgbImage);
         for(Mat m:channels)m.release();
-        cvtColor(rgbImage,res,COLOR_HSV2RGB_FULL);
-        return matToImage(res);
+        return matToImage(rgbImage);
     }
 
     static public BufferedImage contrast(BufferedImage image,int step){

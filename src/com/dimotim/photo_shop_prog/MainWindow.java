@@ -120,12 +120,12 @@ public class MainWindow extends JFrame{
             new SliderDialog(showPanel,CVEffects::brightness,-200,200,0);
         });
         effectsMenu.add(brightnessItem);
-        JMenuItem autoBrightnessItem=new JMenuItem("Автояркость");
-        autoBrightnessItem.addActionListener(e -> {
+        JMenuItem negativeItem=new JMenuItem("Негатив");
+        negativeItem.addActionListener(e -> {
             if(showPanel.getImage()==null)return;
-            showPanel.setImage(CVEffects.autoBrightness(showPanel.getImage()));
+            showPanel.setImage(CVEffects.negative(showPanel.getImage()));
         });
-        effectsMenu.add(autoBrightnessItem);
+        effectsMenu.add(negativeItem);
         JMenuItem contrastItem=new JMenuItem("Контрастность");
         contrastItem.addActionListener(e -> {
             Image image=showPanel.getImage();
@@ -177,4 +177,3 @@ public class MainWindow extends JFrame{
         showPanel.setScale(1);
     }
 }
-
