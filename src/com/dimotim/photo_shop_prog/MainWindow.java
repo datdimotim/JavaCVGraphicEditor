@@ -58,6 +58,7 @@ public class MainWindow extends JFrame{
         saveButton.addActionListener(e -> {
             if(showPanel.getImage()==null)return;
             JFileChooser fc=new JFileChooser();
+            fc.setDialogTitle("Save");
             fc.setMultiSelectionEnabled(false);
             fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
             fc.setApproveButtonText("save");
