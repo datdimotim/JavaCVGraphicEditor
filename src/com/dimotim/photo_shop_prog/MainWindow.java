@@ -1,7 +1,4 @@
 package com.dimotim.photo_shop_prog;
-
-import javafx.scene.control.Slider;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -33,7 +30,7 @@ public class MainWindow extends JFrame{
         setListeners();
         setContentPane(rootPanel);
         pack();
-        //setResizable(false);
+        setMinimumSize(getSize());
         setVisible(true);
     }
     private void setListeners(){
