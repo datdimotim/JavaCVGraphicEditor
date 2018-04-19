@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 
 public class ShowPanel extends JButton {
     private BufferedImage image = null;
+    private double scale=1;
     @Override
     public void paint(Graphics g) {
         g.clearRect(0,0,getWidth(),getHeight());
@@ -32,10 +33,15 @@ public class ShowPanel extends JButton {
     }
 
     public void setScale(double scale){
+        this.scale=scale;
         Dimension s=getParent().getSize();
         s.height*=scale;
         s.width*=scale;
         setPreferredSize(s);
         updateUI();
+    }
+
+    public double getScale(){
+        return scale;
     }
 }

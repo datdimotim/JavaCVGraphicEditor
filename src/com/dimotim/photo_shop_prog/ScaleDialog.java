@@ -2,39 +2,24 @@ package com.dimotim.photo_shop_prog;
 
 import javax.swing.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
 
-public class SliderDialog extends JDialog {
+public class ScaleDialog extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
-    private JSlider stepSlider;
+    private JSlider scaleSlider;
 
-    private ShowPanel showPanel;
-    private BufferedImage initImage;
-    private ImageProcessor imageProcessor;
-    public interface ImageProcessor{
-        BufferedImage process(BufferedImage image, int step);
-    }
-    public SliderDialog(ShowPanel showPanel, ImageProcessor imageProcessor, int minStep, int maxStep, int initStep){
+    public ScaleDialog(ShowPanel showPanel){
         this();
-        stepSlider.setMinimum(minStep);
-        stepSlider.setMaximum(maxStep);
-        stepSlider.setValue(initStep);
-
-        this.showPanel=showPanel;
-        this.imageProcessor=imageProcessor;
-        initImage=showPanel.getImage();
-        setListeners();
+        double initScale=showPanel.getScale();
+        scaleSlider.setValue((int) (showPanel.getScale()*100));
+        scaleSlider.addChangeListener(e->showPanel.setScale(scaleSlider.getValue()/(double)100));
+        buttonCancel.addActionListener(e->showPanel.setScale(initScale));
         pack();
         setVisible(true);
     }
 
-    private void setListeners(){
-        stepSlider.addChangeListener(e -> showPanel.setImage(imageProcessor.process(initImage, stepSlider.getValue())));
-    }
-
-    public SliderDialog() {
+    public ScaleDialog() {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -68,16 +53,17 @@ public class SliderDialog extends JDialog {
     }
 
     private void onOK() {
+        // add your code here
         dispose();
     }
 
     private void onCancel() {
-        showPanel.setImage(initImage);
+        // add your code here if necessary
         dispose();
     }
 
     public static void main(String[] args) {
-        SliderDialog dialog = new SliderDialog();
+        ScaleDialog dialog = new ScaleDialog();
         dialog.pack();
         dialog.setVisible(true);
         System.exit(0);

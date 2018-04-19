@@ -83,22 +83,7 @@ public class MainWindow extends JFrame{
         scaleButton.addActionListener(e -> {
             BufferedImage image=showPanel.getImage();
             if(image==null)return;
-            String ratioStr= JOptionPane.showInputDialog(null, "set ratio:");
-            if(ratioStr==null)return;
-            double ratio;
-            try { ratio = Double.parseDouble(ratioStr); }
-            catch (NumberFormatException ex){
-                JOptionPane.showMessageDialog(this,"input error");
-                return;
-            }
-            int max= Math.max(image.getHeight(null), image.getWidth(null));
-            if(ratio*max<=5||ratio*max>5000){
-                JOptionPane.showMessageDialog(this,"image will too large or too small");
-                return;
-            }
-            if(showPanel.getImage()==null)return;
-            showPanel.setScale(ratio);
-            //showPanel.setImage(CVEffects.resize(image,ratio));
+            new ScaleDialog(showPanel);
         });
         grayButton.addActionListener(e -> {
             BufferedImage image=showPanel.getImage();
@@ -175,6 +160,7 @@ public class MainWindow extends JFrame{
         }
         showPanel.setImage(CVEffects.id(image.getImage()));
         initImage=showPanel.getImage();
+        showPanel.setScale(1);
     }
 }
 
