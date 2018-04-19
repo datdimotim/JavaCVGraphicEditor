@@ -37,6 +37,10 @@ public class ShowPanel extends JButton {
         Dimension s=getParent().getSize();
         s.height*=scale;
         s.width*=scale;
+        if(s.height>s.width/(double)image.getWidth()*image.getHeight())
+            s.height=(int) (s.width/(double)image.getWidth()*image.getHeight());
+        if(s.width>s.height/(double)image.getHeight()*image.getWidth())
+            s.width=(int)(s.height/(double)image.getHeight()*image.getWidth());
         setPreferredSize(s);
         updateUI();
     }
