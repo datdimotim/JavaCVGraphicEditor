@@ -1,4 +1,4 @@
-package com.dimotim.photo_shop_prog;
+package com.diana.photo_shop;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -10,18 +10,18 @@ public class PaleteDialog extends JDialog {
     private JButton buttonCancel;
     private JComboBox sizeComboBox;
 
-    private ShowPanel showPanel;
+    private DisplayPanel displayPanel;
     private BufferedImage initImage;
 
-    public PaleteDialog(ShowPanel showPanel){
+    public PaleteDialog(DisplayPanel displayPanel){
         this();
-        this.showPanel=showPanel;
-        this.initImage=showPanel.getImage();
+        this.displayPanel = displayPanel;
+        this.initImage= displayPanel.getBufferedImage();
         sizeComboBox.addItemListener(e -> {
             System.out.println("palete changed: "+e.getItem());
             if(e.getStateChange()==ItemEvent.SELECTED) {
-                showPanel.setImage(
-                        CVEffects.palette(
+                displayPanel.setBufferedImage(
+                        OpenCVFilters.palette(
                                 initImage,
                                 Integer.parseInt(
                                         e.getItem().toString()
@@ -30,7 +30,7 @@ public class PaleteDialog extends JDialog {
                 );
             }
         });
-        showPanel.setImage(CVEffects.palette(initImage, 8));
+        displayPanel.setBufferedImage(OpenCVFilters.palette(initImage, 8));
         pack();
         setVisible(true);
     }
@@ -40,19 +40,10 @@ public class PaleteDialog extends JDialog {
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
 
-        buttonOK.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onOK();
-            }
-        });
+        buttonOK.addActionListener(e -> onOK());
 
-        buttonCancel.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        });
+        buttonCancel.addActionListener(e -> onCancel());
 
-        // call onCancel() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
@@ -60,12 +51,9 @@ public class PaleteDialog extends JDialog {
             }
         });
 
-        // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        contentPane.registerKeyboardAction(e -> onCancel(),
+                KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+                JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
     private void onOK() {
@@ -73,12 +61,12 @@ public class PaleteDialog extends JDialog {
     }
 
     private void onCancel() {
-        showPanel.setImage(initImage);
+        displayPanel.setBufferedImage(initImage);
         dispose();
     }
 
     public static void main(String[] args) {
-        PaleteDialog dialog = new PaleteDialog(new ShowPanel());
+        PaleteDialog dialog = new PaleteDialog(new DisplayPanel());
         System.exit(0);
     }
 }

@@ -1,4 +1,4 @@
-package com.dimotim.photo_shop_prog;
+package com.diana.photo_shop;
 
 import org.opencv.core.Core;
 

@@ -1,4 +1,3 @@
 Manifest-Version: 1.0
-Class-Path: opencv-2413.jar
-Main-Class: com.dimotim.photo_shop_prog.Main
+Main-Class: com.diana.photo_shop.Main
 

@@ -1,9 +1,8 @@
-package com.dimotim.photo_shop_prog;
+package com.diana.photo_shop;
 
 import org.opencv.core.*;
 import org.opencv.highgui.Highgui;
 import org.opencv.imgproc.Imgproc;
-import sun.misc.Cache;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -16,16 +15,7 @@ import java.util.ArrayList;
 import static org.opencv.core.CvType.*;
 import static org.opencv.imgproc.Imgproc.*;
 
-public class CVEffects {
-    public static BufferedImage resize(BufferedImage image, double scale){
-        Mat in=imageToMat(image);
-        System.out.println(in.cols()+" "+in.rows());
-        Mat out=new Mat((int)(in.rows()*scale),(int)(in.cols()*scale),CvType.CV_8UC3);
-        Imgproc.resize(in,out,new Size((int)(in.cols()*scale),(int)(in.rows()*scale)));
-        in.release();
-        return matToImage(out);
-    }
-
+public class OpenCVFilters {
     public static BufferedImage canny(BufferedImage image, int treshold1, int treshold2, int apertureSize, boolean l2Gradient){
         Mat rgbImage=imageToMat(image);
         Mat edges=new Mat(image.getWidth(null),image.getHeight(null),CvType.CV_8UC3);
@@ -36,7 +26,6 @@ public class CVEffects {
     private static Mat getGammaExpo(int step){
         Mat lut=new Mat(1, 256, CV_8UC1);
         for(int i=0;i<256;i++) {
-            //double d = i+Math.sin(i*0.01255)*step*10;
             double d=i+step;
             if(d<0)d=0;
             if(d>255)d=255;

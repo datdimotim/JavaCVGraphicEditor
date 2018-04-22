@@ -1,4 +1,4 @@
-package com.dimotim.photo_shop_prog;
+package com.diana.photo_shop;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -10,61 +10,45 @@ public class SliderDialog extends JDialog {
     private JButton buttonCancel;
     private JSlider stepSlider;
 
-    private ShowPanel showPanel;
+    private DisplayPanel displayPanel;
     private BufferedImage initImage;
     private ImageProcessor imageProcessor;
     public interface ImageProcessor{
         BufferedImage process(BufferedImage image, int step);
     }
-    public SliderDialog(ShowPanel showPanel, ImageProcessor imageProcessor, int minStep, int maxStep, int initStep){
+    public SliderDialog(DisplayPanel displayPanel, ImageProcessor imageProcessor, int minStep, int maxStep, int initStep){
         this();
         stepSlider.setMinimum(minStep);
         stepSlider.setMaximum(maxStep);
         stepSlider.setValue(initStep);
 
-        this.showPanel=showPanel;
+        this.displayPanel = displayPanel;
         this.imageProcessor=imageProcessor;
-        initImage=showPanel.getImage();
+        initImage= displayPanel.getBufferedImage();
         setListeners();
         pack();
         setVisible(true);
     }
 
     private void setListeners(){
-        stepSlider.addChangeListener(e -> showPanel.setImage(imageProcessor.process(initImage, stepSlider.getValue())));
+        stepSlider.addChangeListener(e -> displayPanel.setBufferedImage(imageProcessor.process(initImage, stepSlider.getValue())));
     }
 
     public SliderDialog() {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
-
-        buttonOK.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onOK();
-            }
-        });
-
-        buttonCancel.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        });
-
-        // call onCancel() when cross is clicked
+        buttonOK.addActionListener(e -> onOK());
+        buttonCancel.addActionListener(e -> onCancel());
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 onCancel();
             }
         });
-
-        // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        contentPane.registerKeyboardAction(e -> onCancel(),
+                KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+                JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
     private void onOK() {
@@ -72,7 +56,7 @@ public class SliderDialog extends JDialog {
     }
 
     private void onCancel() {
-        showPanel.setImage(initImage);
+        displayPanel.setBufferedImage(initImage);
         dispose();
     }
 

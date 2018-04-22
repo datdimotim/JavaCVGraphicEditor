@@ -1,4 +1,4 @@
-package com.dimotim.photo_shop_prog;
+package com.diana.photo_shop;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -12,13 +12,13 @@ public class CannyDialog extends JDialog {
     private JSlider treshold2;
     private JCheckBox l2GradientCheckBox;
     private JComboBox apertureSizeCombobox;
-    private ShowPanel showPanel;
+    private DisplayPanel displayPanel;
     private BufferedImage initImage;
 
-    public CannyDialog(ShowPanel showPanel){
+    public CannyDialog(DisplayPanel displayPanel){
         this();
-        this.showPanel=showPanel;
-        this.initImage=showPanel.getImage();
+        this.displayPanel = displayPanel;
+        this.initImage= displayPanel.getBufferedImage();
         apertureSizeCombobox.addItemListener(e->onChanged());
         treshold1.addChangeListener(e->onChanged());
         treshold2.addChangeListener(e->onChanged());
@@ -30,8 +30,8 @@ public class CannyDialog extends JDialog {
     }
 
     private void onChanged(){
-        showPanel.setImage(
-                CVEffects.canny(
+        displayPanel.setBufferedImage(
+                OpenCVFilters.canny(
                         initImage,
                         treshold1.getValue(),
                         treshold2.getValue(),
@@ -44,19 +44,10 @@ public class CannyDialog extends JDialog {
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
 
-        buttonOK.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onOK();
-            }
-        });
+        buttonOK.addActionListener(e -> onOK());
 
-        buttonCancel.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        });
+        buttonCancel.addActionListener(e -> onCancel());
 
-        // call onCancel() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
@@ -64,21 +55,17 @@ public class CannyDialog extends JDialog {
             }
         });
 
-        // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        contentPane.registerKeyboardAction(e -> onCancel(),
+                KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+                JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
     private void onOK() {
-        // add your code here
         dispose();
     }
 
     private void onCancel() {
-        showPanel.setImage(initImage);
+        displayPanel.setBufferedImage(initImage);
         dispose();
     }
 

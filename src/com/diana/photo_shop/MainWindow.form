@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.dimotim.photo_shop_prog.MainWindow">
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.diana.photo_shop.MainWindow">
   <grid id="27dc6" binding="rootPanel" layout-manager="GridLayoutManager" row-count="9" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="5" left="5" bottom="5" right="5"/>
     <constraints>
@@ -19,7 +19,7 @@
         </properties>
         <border type="none"/>
         <children>
-          <component id="63f29" class="com.dimotim.photo_shop_prog.ShowPanel" binding="showPanel">
+          <component id="63f29" class="com.diana.photo_shop.DisplayPanel" binding="displayPanel">
             <constraints/>
             <properties/>
           </component>

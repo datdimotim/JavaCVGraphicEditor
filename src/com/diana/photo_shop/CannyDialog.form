@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.dimotim.photo_shop_prog.PaleteDialog">
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.diana.photo_shop.CannyDialog">
   <grid id="cbd77" binding="contentPane" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="10" left="10" bottom="10" right="10"/>
     <constraints>
@@ -49,7 +49,7 @@
           </grid>
         </children>
       </grid>
-      <grid id="e3588" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+      <grid id="e3588" layout-manager="GridLayoutManager" row-count="3" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -57,16 +57,41 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="22a9b" class="javax.swing.JComboBox" binding="sizeComboBox">
+          <component id="bed56" class="javax.swing.JSlider" binding="treshold1">
             <constraints>
-              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+              <grid row="2" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <maximum value="255"/>
+              <value value="200"/>
+            </properties>
+          </component>
+          <component id="a908b" class="javax.swing.JSlider" binding="treshold2">
+            <constraints>
+              <grid row="1" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <maximum value="255"/>
+              <value value="80"/>
+            </properties>
+          </component>
+          <component id="93c91" class="javax.swing.JCheckBox" binding="l2GradientCheckBox" default-binding="true">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="l2Gradient"/>
+            </properties>
+          </component>
+          <component id="38338" class="javax.swing.JComboBox" binding="apertureSizeCombobox" default-binding="true">
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <model>
-                <item value="8"/>
-                <item value="27"/>
-                <item value="64"/>
-                <item value="125"/>
+                <item value="3"/>
+                <item value="5"/>
+                <item value="7"/>
               </model>
             </properties>
           </component>
